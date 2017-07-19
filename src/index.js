@@ -6,40 +6,43 @@ import registerServiceWorker from './registerServiceWorker';
 import { Provider } from 'react-redux'
 import { createStore } from 'redux'
 
-function events(){
-  const uid = Number(new Date());
-  return [
-    { id: uid, type: 'track', event: `Video Heartbeat ${uid}`, source: 'android' },
-    { id: uid + 1, type: 'track', event: `Video Heartbeat ${uid + 1}`, source: 'android' },
-    { id: uid + 2 , type: 'track', event: `Video Heartbeat ${uid + 2}`, source: 'android' }
-  ];
+const initialState = {
+  events:[],
+  timer: { buttonText:'start', isStarted: false }
+};
+
+function startTimer(){
+  return { buttonText:'stop', isStarted: true  };
 }
 
-function requestNewChunk(){
-  console.log('new request');
-
-  store.dispatch({
-    type: 'ADD_CHUNK',
-    payload: events()
-  });
-
-  console.log(store.getState());
+function stopTimer(){
+  return { buttonText:'start', isStarted: false};
 }
 
 
-
-function reducer(state = [], action){
+function reducer(state = initialState, action){
   switch (action.type) {
     case 'ADD_CHUNK':
-      return [...action.payload, ...state].slice(0, 11)
+      return {
+        ...state,
+        events: [...action.payload, ...state.events].slice(0, 11)
+      };
+    case 'TOGGLE_TIMER':
+      return {
+        ...state,
+        timer: state.timer.isStarted ? stopTimer() : startTimer(),
+      };
+    case 'TICK':
+      return {
+        ...state,
+        timer: { ...state.timer, id: action.payload.id },
+      };
     default:
       return state
   }
 }
 
 const store = createStore(reducer);
-
-requestNewChunk();
 
 ReactDOM.render(
     <Provider store={store}>

@@ -1,10 +1,9 @@
 import { connect } from 'react-redux'
 import List from '../components/List'
 
-function mapStateToProps(state, ownProps){
-
+function mapStateToProps(state){
   return {
-    events: state
+    events: state.events
   }
 }
 

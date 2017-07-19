@@ -1,10 +1,6 @@
-import React, { Component , PropTypes} from 'react'
-// import {PropTypes} from 'react-redux'
+import React, { Component } from 'react'
 
 class List extends Component{
-  // static propTypes = {
-  //   events: PropTypes.object.isRequired
-  // };
 
   render() {
     const { events } = this.props;
@@ -13,7 +9,6 @@ class List extends Component{
        {event.event}
      </li>)
 
-     console.log(listItems);
      return (
        <ul>{listItems}</ul>
      );
