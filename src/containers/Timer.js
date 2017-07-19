@@ -1,20 +1,11 @@
 import { connect } from 'react-redux'
 import Button from '../components/Button'
 
-function requestEvents(){
-  const uid = Number(new Date());
-  return [
-    { id: uid, type: 'track', event: `Video Heartbeat ${uid}`, source: 'android' },
-    { id: uid + 1, type: 'track', event: `Video Heartbeat ${uid + 1}`, source: 'android' },
-    { id: uid + 2 , type: 'track', event: `Video Heartbeat ${uid + 2}`, source: 'android' }
-  ];
-}
-
-function loop(dispatch){
-  dispatch({ type: 'ADD_CHUNK', payload: requestEvents() });
-
-  const id = setTimeout(() => {loop(dispatch)}, 1000);
-  dispatch({ type: 'TICK', payload: { id } });
+function loop(dispatch, onTick){
+  onTick(dispatch, () => {
+    const id = setTimeout(() => {loop(dispatch, onTick)}, 1000);
+    dispatch({ type: 'TICK', payload: { id } });
+  })
 }
 
 function mapStateToProps(state){
@@ -25,14 +16,14 @@ function mapStateToProps(state){
   }
 }
 
-function mapDispatchToProps(dispatch){
+function mapDispatchToProps(dispatch, ownProps){
   return {
     onClick: ({isStarted, timerID}) => {
       dispatch({ type: 'TOGGLE_TIMER' });
       if (isStarted) {
         clearTimeout(timerID);
       } else {
-        loop(dispatch);
+        loop(dispatch, ownProps.onTick);
       }
     }
   }

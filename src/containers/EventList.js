@@ -7,7 +7,4 @@ function mapStateToProps(state){
   }
 }
 
-export default connect(
-  mapStateToProps,
-  dispatch => ({})
-)(List);
+export default connect(mapStateToProps)(List);
