@@ -13,12 +13,16 @@ function requestEventsSync(dispatch, callback){
 }
 
 function requestEventsAsync(dispatch, callback) {
-  // get(url,
-  //     onSuccess: function(data) {
-  //       dispatch({ type: 'ADD_CHUNK', payload: data});
-  //       callback();
-  //     }
-  // )
+  fetch('http://127.0.0.1:8881/')
+  .then(response => response.json())
+  .then(json => {
+    dispatch({ type: 'ADD_CHUNK', payload: json.events });
+    callback();
+  })
+  .catch(error => {
+    console.log(error);
+    callback();
+  });
 }
 
 

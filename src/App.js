@@ -3,7 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 import EventList from './containers/EventList'
 import Timer from './containers/Timer'
-import { requestEventsSync } from './requester'
+import { requestEventsAsync } from './requester'
 
 
 class App extends Component {
@@ -14,7 +14,7 @@ class App extends Component {
           <img src={logo} className="App-logo" alt="logo" />
           <h2>Welcome to React</h2>
         </div>
-        <Timer onTick={requestEventsSync} />
+        <Timer onTick={requestEventsAsync} />
         <EventList />
       </div>
     );
