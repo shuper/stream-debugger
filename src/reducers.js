@@ -11,7 +11,8 @@ function reducer(state, action){
     case 'ADD_CHUNK':
       return {
         ...state,
-        events: [...action.payload, ...state.events].slice(0, 11)
+        events: [...action.payload, ...state.events].slice(0, 11),
+        eventCounts: [...state.eventCounts, action.payload.length]
       };
     case 'TOGGLE_TIMER':
       return {

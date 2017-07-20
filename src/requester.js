@@ -12,8 +12,12 @@ function requestEventsSync(dispatch, callback){
   callback();
 }
 
+function getRandomInt(min, max) {
+  return Math.floor(Math.random() * (max - min)) + min;
+}
+
 function requestEventsAsync(dispatch, callback) {
-  fetch('http://127.0.0.1:8881/')
+  fetch(`http://127.0.0.1:8881/?events_count=${getRandomInt(2, 100)}`)
   .then(response => response.json())
   .then(json => {
     dispatch({ type: 'ADD_CHUNK', payload: json.events });

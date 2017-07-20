@@ -22,3 +22,20 @@
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+.Chart {
+  margin-top: 5px;
+  border-bottom: 1px solid #d9e3ed;
+  position: relative;
+  height: 200px;
+
+}
+
+.Bar {
+  display: inline-block;
+    margin: 0 1px 0 0;
+    background-color: #49b882;
+    width: 5px;
+    -ms-flex-item-align: end;
+    align-self: flex-end;
+}

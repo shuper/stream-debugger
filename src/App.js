@@ -4,6 +4,7 @@ import './App.css';
 import EventList from './containers/EventList'
 import Timer from './containers/Timer'
 import { requestEventsAsync } from './requester'
+import EventsChart from './containers/EventsChart'
 
 
 class App extends Component {
@@ -14,7 +15,10 @@ class App extends Component {
           <img src={logo} className="App-logo" alt="logo" />
           <h2>Welcome to React</h2>
         </div>
-        <Timer onTick={requestEventsAsync} />
+        <EventsChart />
+        <div>
+          <Timer onTick={requestEventsAsync} />
+        </div>
         <EventList />
       </div>
     );
