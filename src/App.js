@@ -3,7 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 import EventList from './containers/EventList'
 import Timer from './containers/Timer'
-import { requestEventsAsync } from './requester'
+import { requestKinesis } from './requester'
 import EventsChart from './containers/EventsChart'
 
 
@@ -17,7 +17,7 @@ class App extends Component {
         </div>
         <EventsChart />
         <div>
-          <Timer onTick={requestEventsAsync} />
+          <Timer onTick={requestKinesis} />
         </div>
         <EventList />
       </div>

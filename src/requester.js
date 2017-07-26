@@ -29,5 +29,29 @@ function requestEventsAsync(dispatch, callback) {
   });
 }
 
+function requestKinesis(dispatch, callback) {
+  requestShardIterator((shardIteratorID) => {
+    const url = "https://dsfuupgo82.execute-api.eu-west-1.amazonaws.com/Test/streams/myStream/records";
+    fetch(url, {mode: "cors", headers: new Headers({"Shard-Iterator": shardIteratorID})})
+      .then(response => response.json())
+      .then(json => {
+        const records = json.Records.map(e => atob(e.Data));
+        console.log(records);
+        dispatch({type: 'ADD_CHUNK', payload: records});
+        callback();
+      })
+  })
+}
 
-export { requestEventsAsync, requestEventsSync };
+function requestShardIterator(callback) {
+  const url = "https://dsfuupgo82.execute-api.eu-west-1.amazonaws.com/Test/streams/myStream/sharditerator?shard-id=shardId-000000000000";
+  fetch(url)
+    .then(response => response.json())
+    .then(json => callback(json.ShardIterator))
+    .catch(error => {
+      console.log("requestShardIterator", error)
+    })
+}
+
+
+export { requestEventsAsync, requestEventsSync, requestKinesis };
