@@ -1,14 +1,14 @@
-function events() {
-  const uid = Number(new Date());
-  return [
-    { id: uid, type: 'track', event: `Video Heartbeat ${uid}`, source: 'android' },
-    { id: uid + 1, type: 'track', event: `Video Heartbeat ${uid + 1}`, source: 'android' },
-    { id: uid + 2 , type: 'track', event: `Video Heartbeat ${uid + 2}`, source: 'android' }
-  ];
+function events(events_count) {
+  events_count = events_count || getRandomInt(2, 100);
+  const uid = Date.now();
+  return Array.from({length: events_count}, (_, i) => (
+      {messageId: uid + i, type: 'track', event: `Video Heartbeat ${uid + i}`, source: 'android'}
+    )
+  )
 }
 
-function requestEventsSync(dispatch, callback){
-  dispatch({ type: 'ADD_CHUNK', payload: events() });
+function requestEventsSync(dispatch, callback) {
+  dispatch({type: 'ADD_CHUNK', payload: events()});
   callback();
 }
 
@@ -17,16 +17,24 @@ function getRandomInt(min, max) {
 }
 
 function requestEventsAsync(dispatch, callback) {
-  fetch(`http://127.0.0.1:8881/?events_count=${getRandomInt(2, 100)}`)
-  .then(response => response.json())
-  .then(json => {
-    dispatch({ type: 'ADD_CHUNK', payload: json.events });
-    callback();
-  })
-  .catch(error => {
-    console.log(error);
-    callback();
-  });
+  const data = new FormData();
+  data.append("json", JSON.stringify(events()));
+  fetch(`http://127.0.0.1:8881/`, {
+    method: "POST",
+    body: JSON.stringify(events())
+  }).then(response => response.json())
+    .then(json => {
+      dispatch({type: 'ADD_CHUNK', payload: parseRecords(json.Records)});
+      callback();
+    })
+    .catch(error => {
+      console.log(error);
+      callback();
+    });
+}
+
+function parseRecords(records) {
+  return records ? records.map(e => JSON.parse(atob(e.Data))) : [];
 }
 
 function requestKinesis(dispatch, callback) {
@@ -35,8 +43,8 @@ function requestKinesis(dispatch, callback) {
     fetch(url, {mode: "cors", headers: new Headers({"Shard-Iterator": shardIteratorID})})
       .then(response => response.json())
       .then(json => {
-        const records = json.Records.map(e => atob(e.Data));
-        console.log(records);
+        console.log(json);
+        const records = parseRecords(json.Records);
         dispatch({type: 'ADD_CHUNK', payload: records});
         callback();
       })
@@ -54,4 +62,4 @@ function requestShardIterator(callback) {
 }
 
 
-export { requestEventsAsync, requestEventsSync, requestKinesis };
+export {requestEventsAsync, requestEventsSync, requestKinesis};

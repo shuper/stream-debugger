@@ -1,6 +1,7 @@
 import tornado.ioloop
 import tornado.web
-import time
+import json
+from base64 import b64encode
 
 
 class MainHandler(tornado.web.RequestHandler):
@@ -9,23 +10,15 @@ class MainHandler(tornado.web.RequestHandler):
         self.set_header("Access-Control-Allow-Headers", "x-requested-with")
         self.set_header("Access-Control-Allow-Methods", "GET, OPTIONS")
 
-    def get(self):
-        t = time.time()
-        events = [{
-            "id": t + i,
-            "type": "track",
-            "event": f"Video Heartbeat {t + i}",
-            "source": 'android'
-        } for i in range(self.events_count)]
-        self.write({"events": events})
+    def post(self):
+        self.write({"Records": self.encoded_events})
 
     @property
-    def events_count(self):
-        default = 3
-        try:
-            return int(self.get_query_argument("events_count", default))
-        except ValueError:
-            return default
+    def encoded_events(self):
+        events = json.loads(self.request.body)
+        bytify_obj = lambda e: json.dumps(e).encode()
+        to_b64str = lambda e: b64encode(bytify_obj(e)).decode()
+        return [{"Data": to_b64str(e)} for e in events]
 
 
 def make_app():
