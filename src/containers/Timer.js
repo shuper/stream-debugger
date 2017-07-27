@@ -1,11 +1,11 @@
 import { connect } from 'react-redux'
 import Button from '../components/Button'
 
-function loop(dispatch, onTick){
-  onTick(dispatch, () => {
-    const id = setTimeout(() => {loop(dispatch, onTick)}, 1000);
+function loop(dispatch, onTick, options){
+  onTick(dispatch, (options1) => {
+    const id = setTimeout(() => {loop(dispatch, onTick, options1)}, 1000);
     dispatch({ type: 'TICK', payload: { id } });
-  })
+  }, {...options, a: 1})
 }
 
 function mapStateToProps(state){

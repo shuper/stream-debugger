@@ -34,31 +34,53 @@ function requestEventsAsync(dispatch, callback) {
 }
 
 function parseRecords(records) {
-  return records ? records.map(e => JSON.parse(atob(e.Data))) : [];
+  return records ? records.map(e => {
+      const j = JSON.parse(atob(e.Data));
+      return {...j, id: e.SequenceNumber}
+    }
+  ) : [];
 }
 
-function requestKinesis(dispatch, callback) {
+function requestKinesis(dispatch, callback, options) {
   requestShardIterator((shardIteratorID) => {
-    const url = "https://dsfuupgo82.execute-api.eu-west-1.amazonaws.com/Test/streams/myStream/records";
+    const url = streamUrl() + "records";
     fetch(url, {mode: "cors", headers: new Headers({"Shard-Iterator": shardIteratorID})})
       .then(response => response.json())
       .then(json => {
-        console.log(json);
-        const records = parseRecords(json.Records);
-        dispatch({type: 'ADD_CHUNK', payload: records});
-        callback();
+        try {
+          console.log(json);
+          const records = parseRecords(json.Records);
+          dispatch({type: 'ADD_CHUNK', payload: records});
+          callback({nextShardIterator: json.NextShardIterator});
+        } catch (e) {
+          console.log("requestKinesis>then" + e)
+        }
       })
-  })
+      .catch(error => {
+        console.log("requestKinesis" + error);
+        callback();
+      });
+  }, options)
 }
 
-function requestShardIterator(callback) {
-  const url = "https://dsfuupgo82.execute-api.eu-west-1.amazonaws.com/Test/streams/myStream/sharditerator?shard-id=shardId-000000000000";
+function requestShardIterator(callback, options) {
+  if (options && options.nextShardIterator) {
+    return callback(options.nextShardIterator)
+  }
+  const url = streamUrl() +
+    "sharditerator?" +
+    "shard-id=shardId-000000000000" +
+    "&type=LATEST";
   fetch(url)
     .then(response => response.json())
     .then(json => callback(json.ShardIterator))
     .catch(error => {
       console.log("requestShardIterator", error)
     })
+}
+
+function streamUrl() {
+  return "https://dsfuupgo82.execute-api.eu-west-1.amazonaws.com/Test/streams/myStream/";
 }
 
 

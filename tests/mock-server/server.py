@@ -2,6 +2,7 @@ import tornado.ioloop
 import tornado.web
 import json
 from base64 import b64encode
+from time import sleep
 
 
 class MainHandler(tornado.web.RequestHandler):
@@ -11,6 +12,7 @@ class MainHandler(tornado.web.RequestHandler):
         self.set_header("Access-Control-Allow-Methods", "GET, OPTIONS")
 
     def post(self):
+        sleep(0.5)
         self.write({"Records": self.encoded_events})
 
     @property
