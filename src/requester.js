@@ -1,8 +1,8 @@
-function events(events_count) {
+function events(events_count, event_name) {
   events_count = events_count || getRandomInt(2, 100);
   const uid = Date.now();
   return Array.from({length: events_count}, (_, i) => (
-      {messageId: uid + i, type: 'track', event: `Video Heartbeat ${uid + i}`, source: 'android'}
+      {messageId: uid + i, type: 'track', event: event_name || `Video Heartbeat ${uid + i}`, source: 'android'}
     )
   )
 }
@@ -83,5 +83,13 @@ function streamUrl() {
   return "https://dsfuupgo82.execute-api.eu-west-1.amazonaws.com/Test/streams/myStream/";
 }
 
+function sendEventToKinesis(eventName) {
+  fetch(streamUrl() + 't', {
+    method: "POST",
+    body: JSON.stringify(events(1, eventName)[0] )
+  }).then(response => response.json())
+    .then(json => console.log("An event has been sent", json))
+    .catch(e => console.log("Error sending an event", e))
+}
 
-export {requestEventsAsync, requestEventsSync, requestKinesis};
+export {requestEventsAsync, requestEventsSync, requestKinesis, sendEventToKinesis};
