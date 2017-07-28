@@ -1,21 +1,26 @@
 .App {
-  text-align: center;
+  text-align: left;
 }
 
 .App-logo {
   animation: App-logo-spin infinite 20s linear;
-  height: 80px;
+  height: 40px;
 }
 
 .App-header {
   background-color: #222;
-  height: 150px;
-  padding: 20px;
+  height: 40px;
+  padding: 5px;
   color: white;
 }
 
-.App-intro {
-  font-size: large;
+.App-header * {
+  vertical-align: middle;
+}
+
+.HeaderTitle {
+  display: inline-block;
+  font-size: 100%;
 }
 
 @keyframes App-logo-spin {
@@ -23,19 +28,92 @@
   to { transform: rotate(360deg); }
 }
 
-.Chart {
-  margin-top: 5px;
+.DebuggerGraph {
   border-bottom: 1px solid #d9e3ed;
   position: relative;
   height: 200px;
-
+  background: #f9fafb;
 }
 
-.Bar {
+.DebuggerGraph-plot {
+  position: relative;
+  height: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-box-pack: end;
+  -ms-flex-pack: end;
+  justify-content: flex-end;
+}
+
+.DebuggerGraph-plotBar {
   display: inline-block;
-    margin: 0 1px 0 0;
-    background-color: #49b882;
-    width: 5px;
-    -ms-flex-item-align: end;
-    align-self: flex-end;
+  margin: 0 1px 0 0;
+  background-color: #49b882;
+  width: 5px;
+  align-self: flex-end;
+}
+
+.ui-Button {
+  background-color: #49b882;
+  border-radius: 5px;
+  text-transform: capitalize;
+  border: 0;
+  color: #fff;
+  display: inline-block;
+  line-height: 16px;
+  font-size: 14px;
+  font-weight: 400;
+  text-decoration: none;
+  -webkit-transition: .2s;
+  transition: .2s;
+  -webkit-transition-property: background-color,color,box-shadow,opacity;
+  transition-property: background-color,color,box-shadow,opacity;
+  cursor: pointer;
+  padding: 10px 20px;
+  text-align: center;
+  white-space: nowrap;
+  box-sizing: border-box;
+}
+
+.DebuggerToolbar {
+  border-bottom: 1px solid #d9e3ed;
+  padding: 10px 25px;
+  background: #fff;
+}
+
+.DebuggerList {
+  overflow: hidden;
+  max-height: 2800px;
+  list-style: none;
+  padding-left: 0;
+  text-indent: 0;
+}
+
+.DebuggerListItem {
+  border-bottom: 1px solid #d9e3ed;
+  background: #fff;
+  color: #193652;
+  cursor: pointer;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  font-size: 14px;
+  line-height: 20px;
+  padding: 15px 25px;
+  position: relative;
+  -webkit-animation: slidein .5s cubic-bezier(.735,.05,.41,.995);
+  animation: slidein .5s cubic-bezier(.735,.05,.41,.995);
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
 }

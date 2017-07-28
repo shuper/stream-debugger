@@ -3,6 +3,7 @@ import tornado.web
 import json
 from base64 import b64encode
 from time import sleep
+import uuid
 
 
 class MainHandler(tornado.web.RequestHandler):
@@ -20,7 +21,7 @@ class MainHandler(tornado.web.RequestHandler):
         events = json.loads(self.request.body)
         bytify_obj = lambda e: json.dumps(e).encode()
         to_b64str = lambda e: b64encode(bytify_obj(e)).decode()
-        return [{"Data": to_b64str(e)} for e in events]
+        return [{"Data": to_b64str(e), "SequenceNumber": str(uuid.uuid4())} for e in events]
 
 
 def make_app():
