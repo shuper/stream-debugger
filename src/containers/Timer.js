@@ -1,30 +1,19 @@
-import { connect } from 'react-redux'
+import {connect} from 'react-redux'
 import Button from '../components/Button'
 
-function loop(dispatch, onTick, options){
-  onTick(dispatch, (options1) => {
-    const id = setTimeout(() => {loop(dispatch, onTick, options1)}, 1000);
-    dispatch({ type: 'TICK', payload: { id } });
-  }, {...options, a: 1})
-}
 
-function mapStateToProps(state){
+function mapStateToProps(state) {
   return {
     text: state.timer.buttonText,
-    isStarted: state.timer.isStarted,
-    timerID: state.timer.id
+    isStarted: state.timer.isStarted
   }
 }
 
-function mapDispatchToProps(dispatch, ownProps){
+function mapDispatchToProps(dispatch) {
   return {
-    onClick: ({isStarted, timerID}) => {
+    onClick: () => {
       dispatch({ type: 'TOGGLE_TIMER' });
-      if (isStarted) {
-        clearTimeout(timerID);
-      } else {
-        loop(dispatch, ownProps.onTick);
-      }
+      dispatch({ type: 'TICK' });
     }
   }
 }

@@ -13,7 +13,7 @@ class MainHandler(tornado.web.RequestHandler):
         self.set_header("Access-Control-Allow-Methods", "GET, OPTIONS")
 
     def post(self):
-        sleep(0.5)
+        sleep(self.delay)
         self.write({"Records": self.encoded_events})
 
     @property
@@ -22,6 +22,10 @@ class MainHandler(tornado.web.RequestHandler):
         bytify_obj = lambda e: json.dumps(e).encode()
         to_b64str = lambda e: b64encode(bytify_obj(e)).decode()
         return [{"Data": to_b64str(e), "SequenceNumber": str(uuid.uuid4())} for e in events]
+
+    @property
+    def delay(self):
+        return float(self.get_argument('delay', 0.5))
 
 
 def make_app():

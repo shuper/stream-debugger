@@ -1,5 +1,6 @@
-import { createStore } from 'redux'
+import { createStore, applyMiddleware } from 'redux'
 import reducer from './reducers'
+import {fetcher} from './middlewares'
 
 const initialState = {
   events:[],
@@ -7,4 +8,4 @@ const initialState = {
   eventCounts: []
 };
 
-export default createStore(reducer, initialState);
+export default createStore(reducer, initialState, applyMiddleware(fetcher));

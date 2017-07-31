@@ -1,39 +1,14 @@
-function events(events_count, event_name) {
-  events_count = events_count || getRandomInt(2, 1000);
-  const uid = Date.now();
-  return Array.from({length: events_count}, (_, i) => (
-      {
-        messageId: uid + i, type: 'track', event: event_name || `Video Heartbeat ${uid + i}`,
-        source: 'android'
-      }
-    )
-  )
-}
+import {events} from './eventGenerator'
 
-function requestEventsSync(dispatch, callback) {
-  dispatch({type: 'ADD_CHUNK', payload: events()});
-  callback();
-}
-
-function getRandomInt(min, max) {
-  return Math.floor(Math.random() * (max - min)) + min;
-}
-
-function requestEventsAsync(dispatch, callback) {
+async function requestEventsAsync() {
   const data = new FormData();
   data.append("json", JSON.stringify(events()));
-  fetch(`http://127.0.0.1:8881/`, {
+  const response = await fetch(`http://127.0.0.1:8881/?delay=0.5`, {
     method: "POST",
     body: JSON.stringify(events())
-  }).then(response => response.json())
-    .then(json => {
-      dispatch({type: 'ADD_CHUNK', payload: parseRecords(json.Records)});
-      callback();
-    })
-    .catch(error => {
-      console.log(error);
-      callback();
-    });
+  });
+  const json = await response.json();
+  return parseRecords(json.Records);
 }
 
 function parseRecords(records) {
@@ -95,4 +70,4 @@ function sendEventToKinesis(eventName) {
     .catch(e => console.log("Error sending an event", e))
 }
 
-export {requestEventsAsync, requestEventsSync, requestKinesis, sendEventToKinesis};
+export {requestEventsAsync, requestKinesis, sendEventToKinesis};

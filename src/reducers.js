@@ -19,11 +19,6 @@ function reducer(state, action){
         ...state,
         timer: state.timer.isStarted ? stopTimer() : startTimer(),
       };
-    case 'TICK':
-      return {
-        ...state,
-        timer: { ...state.timer, id: action.payload.id },
-      };
     default:
       return state
   }

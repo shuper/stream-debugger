@@ -3,7 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 import EventList from './containers/EventList'
 import Timer from './containers/Timer'
-import {requestEventsAsync, sendEventToKinesis} from './requester'
+import {sendEventToKinesis} from './requester'
 import EventsChart from './containers/EventsChart'
 
 
@@ -12,7 +12,7 @@ class App extends Component {
     return (
       <div className="App">
         <div className="App-header" onClick={() => sendEventToKinesis("header click")}
-             onMouseMove={(e) => sendEventToKinesis(`header mouse move: (${e.screenX}, ${e.screenY})`)}>
+             onMouseMoveStop={(e) => sendEventToKinesis(`header mouse move: (${e.screenX}, ${e.screenY})`)}>
           <img src={logo} className="App-logo" alt="logo" />
           <h1 className="HeaderTitle">SIH Debugger</h1>
         </div>
@@ -20,7 +20,7 @@ class App extends Component {
         <EventsChart />
 
         <div className="DebuggerToolbar">
-          <Timer onTick={requestEventsAsync} />
+          <Timer />
         </div>
 
         <EventList />
