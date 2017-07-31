@@ -11,13 +11,15 @@ function reducer(state, action){
     case 'ADD_CHUNK':
       return {
         ...state,
-        events: [...action.payload, ...state.events].slice(0, 11),
-        eventCounts: [...state.eventCounts, action.payload.length]
+        events: [...action.payload.events, ...state.events].slice(0, 11),
+        eventCounts: [...state.eventCounts, action.payload.events.length],
+        shardIterator: action.payload.shardIterator
       };
     case 'TOGGLE_TIMER':
       return {
         ...state,
         timer: state.timer.isStarted ? stopTimer() : startTimer(),
+        shardIterator: null
       };
     default:
       return state

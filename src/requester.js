@@ -8,7 +8,7 @@ async function requestEventsAsync() {
     body: JSON.stringify(events())
   });
   const json = await response.json();
-  return parseRecords(json.Records);
+  return {events: parseRecords(json.Records)};
 }
 
 function parseRecords(records) {
@@ -19,42 +19,25 @@ function parseRecords(records) {
   ) : [];
 }
 
-function requestKinesis(dispatch, callback, options) {
-  requestShardIterator((shardIteratorID) => {
-    const url = streamUrl() + "records";
-    fetch(url, {mode: "cors", headers: new Headers({"Shard-Iterator": shardIteratorID})})
-      .then(response => response.json())
-      .then(json => {
-        try {
-          console.log(json);
-          const records = parseRecords(json.Records);
-          dispatch({type: 'ADD_CHUNK', payload: records});
-          callback({nextShardIterator: json.NextShardIterator});
-        } catch (e) {
-          console.log("requestKinesis>then" + e)
-        }
-      })
-      .catch(error => {
-        console.log("requestKinesis" + error);
-        callback();
-      });
-  }, options)
+async function requestKinesis(shardIterator) {
+  if (!shardIterator) {
+    shardIterator = await requestShardIterator();
+  }
+  const url = streamUrl() + "records";
+  const response = await fetch(url, {mode: "cors", headers: new Headers({"Shard-Iterator": shardIterator})});
+  const json = await response.json();
+
+  return {events: parseRecords(json.Records), shardIterator: json.NextShardIterator};
 }
 
-function requestShardIterator(callback, options) {
-  if (options && options.nextShardIterator) {
-    return callback(options.nextShardIterator)
-  }
+async function requestShardIterator() {
   const url = streamUrl() +
     "sharditerator?" +
     "shard-id=shardId-000000000000" +
     "&type=LATEST";
-  fetch(url)
-    .then(response => response.json())
-    .then(json => callback(json.ShardIterator))
-    .catch(error => {
-      console.log("requestShardIterator", error)
-    })
+  const response = await fetch(url);
+  const json = await response.json();
+  return json.ShardIterator;
 }
 
 function streamUrl() {
@@ -66,7 +49,6 @@ function sendEventToKinesis(eventName) {
     method: "POST",
     body: JSON.stringify(events(1, eventName)[0] )
   }).then(response => response.json())
-    .then(json => console.log("An event has been sent", json))
     .catch(e => console.log("Error sending an event", e))
 }
 
