@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "chai": "^4.1.0",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
     "react-redux": "^5.0.5",
@@ -14,7 +13,17 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
+    "test": "mocha --require ./tests/testSetup.js --compilers babel-core/register --recursive ./tests/specs",
+    "test:watch": "npm test -- -w",
     "eject": "react-scripts eject"
+  },
+  "devDependencies": {
+    "babel-preset-es2015": "^6.24.1",
+    "chai": "^4.1.0",
+    "enzyme": "^2.9.1",
+    "mocha": "^3.5.0",
+    "react-addons-test-utils": "^15.6.0",
+    "react-test-renderer": "^15.6.1",
+    "sinon": "^2.4.1"
   }
 }
