@@ -1,5 +1,6 @@
 import {connect} from 'react-redux'
 import Button from '../components/Button'
+import {requestEvents} from '../actions/fetcher'
 
 
 function mapStateToProps(state) {
@@ -13,7 +14,7 @@ function mapDispatchToProps(dispatch) {
   return {
     onClick: () => {
       dispatch({ type: 'TOGGLE_TIMER' });
-      dispatch({ type: 'TICK' });
+      dispatch(requestEvents());
     }
   }
 }

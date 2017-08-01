@@ -1,6 +1,6 @@
 import { createStore, applyMiddleware } from 'redux'
 import reducer from './reducers'
-import {fetcher} from './middlewares'
+import thunk from 'redux-thunk';
 
 const initialState = {
   events:[],
@@ -8,4 +8,4 @@ const initialState = {
   eventCounts: []
 };
 
-export default createStore(reducer, initialState, applyMiddleware(fetcher));
+export default createStore(reducer, initialState, applyMiddleware(thunk));

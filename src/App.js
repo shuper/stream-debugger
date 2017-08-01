@@ -2,8 +2,8 @@ import React, {Component} from 'react';
 import logo from './logo.svg';
 import './App.css';
 import EventList from './containers/EventList'
-import Timer from './containers/Timer'
-import {sendEventToKinesis} from './requester'
+import Switcher from './containers/Switcher'
+import {sendEventToKinesis} from './lib/requester'
 import EventsChart from './containers/EventsChart'
 
 
@@ -20,7 +20,7 @@ class App extends Component {
         <EventsChart />
 
         <div className="DebuggerToolbar">
-          <Timer />
+          <Switcher />
         </div>
 
         <EventList />

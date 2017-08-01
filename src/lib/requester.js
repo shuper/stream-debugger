@@ -48,8 +48,10 @@ function sendEventToKinesis(eventName) {
   fetch(streamUrl() + 't', {
     method: "POST",
     body: JSON.stringify(events(1, eventName)[0] )
-  }).then(response => response.json())
+  }).then(response => {})
     .catch(e => console.log("Error sending an event", e))
 }
 
-export {requestEventsAsync, requestKinesis, sendEventToKinesis};
+export {sendEventToKinesis};
+export default requestEventsAsync;
+// export default requestKinesis;
