@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import logo from './logo.svg';
-import './App.css';
+import logo from './assets/logo.svg';
+import './assets/App.css';
 import EventList from './containers/EventList'
 import Switcher from './containers/Switcher'
 import {sendEventToKinesis} from './lib/requester'
