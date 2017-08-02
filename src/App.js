@@ -9,21 +9,22 @@ import EventsChart from './containers/EventsChart'
 
 class App extends Component {
   render() {
+    // const onMouseMove = (e) => sendEventToKinesis(`header mouse move: (${e.screenX}, ${e.screenY})`);
+    const onMouseMove = (e) => {};
     return (
       <div className="App">
-        <div className="App-header" onClick={() => sendEventToKinesis("header click")}
-             onMouseMoveStop={(e) => sendEventToKinesis(`header mouse move: (${e.screenX}, ${e.screenY})`)}>
+        <div className="App-header" onClick={() => sendEventToKinesis("header click")} onMouseMove={onMouseMove}>
           <img src={logo} className="App-logo" alt="logo" />
           <h1 className="HeaderTitle">SIH Debugger</h1>
         </div>
 
-        <EventsChart />
+        <EventsChart id="chart"/>
 
         <div className="DebuggerToolbar">
-          <Switcher />
+          <Switcher id="switcher" />
         </div>
 
-        <EventList />
+        <EventList id="events-list"/>
       </div>
     );
   }
