@@ -10,11 +10,11 @@ function mapStateToProps(state) {
   }
 }
 
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps(dispatch, ownProps) {
   return {
     onClick: () => {
       dispatch({ type: 'TOGGLE_TIMER' });
-      dispatch(requestEvents());
+      dispatch(requestEvents(ownProps.requestEventsAsync));
     }
   }
 }

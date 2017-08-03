@@ -24,7 +24,7 @@ class Chart extends Component {
     const bars = eventCounts.map((e, i) => this.renderBar(e, i));
 
     return (
-      <div className="DebuggerGraph">
+      <div id={this.props.id} className="DebuggerGraph">
         <div className="DebuggerGraph-plot">
           {bars}
         </div>

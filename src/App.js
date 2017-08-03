@@ -12,7 +12,7 @@ class App extends Component {
     // const onMouseMove = (e) => sendEventToKinesis(`header mouse move: (${e.screenX}, ${e.screenY})`);
     const onMouseMove = (e) => {};
     return (
-      <div className="App">
+      <div id="App" className="App">
         <div className="App-header" onClick={() => sendEventToKinesis("header click")} onMouseMove={onMouseMove}>
           <img src={logo} className="App-logo" alt="logo" />
           <h1 className="HeaderTitle">SIH Debugger</h1>
@@ -21,7 +21,7 @@ class App extends Component {
         <EventsChart id="chart"/>
 
         <div className="DebuggerToolbar">
-          <Switcher id="switcher" />
+          <Switcher id="switcher" requestEventsAsync={this.props.requestEventsAsync} />
         </div>
 
         <EventList id="events-list"/>

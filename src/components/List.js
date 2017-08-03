@@ -8,7 +8,7 @@ class List extends Component{
     });
 
      return (
-       <ul className="DebuggerList">{listItems}</ul>
+       <ul id={this.props.id} className="DebuggerList">{listItems}</ul>
      );
   }
 }
