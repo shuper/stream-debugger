@@ -18,6 +18,10 @@ module.exports = function (wallaby) {
 
     compilers: {
       '**/*.js*': wallaby.compilers.babel()
+    },
+
+    preprocessors: {
+      'src/assets/**/*.*': file => '{}'
     }
   };
 };
