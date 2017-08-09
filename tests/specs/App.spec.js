@@ -1,14 +1,19 @@
 import React from 'react';
-import { expect } from 'chai';
-import { mount } from 'enzyme';
-import { Provider } from 'react-redux';
+import {expect} from 'chai';
+import {mount} from 'enzyme';
+import {Provider} from 'react-redux';
 
-import App from  '../../src/App'
-import store from '../../src/store'
+import App from  '../../src/App';
+import store from '../../src/store';
 
 async function requestEventsAsync() {
-  let id = Math.random().toString();
-  return {events: [{id: id, messageId: id, type: 'track', event: "Video Heartbeat 1"}]}
+  const id = Math.random().toString();
+  return {events: [{
+    id,
+    messageId: id,
+    type: 'track',
+    event: 'Video Heartbeat 1'}],
+  };
 }
 
 describe('App', () => {
@@ -25,12 +30,12 @@ describe('App', () => {
   });
 
 
-  it.skip('populates list', function(){
+  it.skip('populates list', () => {
     const appWrapper = app();
     const switcher = appWrapper.find('#switcher');
-    expect(appWrapper.find('#events-list').find(".DebuggerListItem")).to.have.lengthOf(0);
+    expect(appWrapper.find('#events-list').find('.DebuggerListItem')).to.have.lengthOf(0);
     expect(switcher.simulate('click'));
-    expect(async () => {
-      return appWrapper.find('#events-list').find(".DebuggerListItem")}).to.not.have.lengthOf(0);
-  })
+    expect(async () => appWrapper.find('#events-list').find('.DebuggerListItem'))
+      .to.not.have.lengthOf(0);
+  });
 });

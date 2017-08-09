@@ -1,21 +1,24 @@
-import React, {Component} from 'react'
+import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 
 class Chart extends Component {
-
-  renderBar(count, idx) {
-
-    return (
-      <div id={idx.toString()}
-           className="DebuggerGraph-plotBar"
-           style={{height: this.height(count)}}
-           key={idx.toString()}
-           title={count.toString()}/>
-    )
+  constructor(props) {
+    super(props);
+    this.BAR_HEIGHT = 190;
   }
 
-  BAR_HEIGHT = 190;
+  renderBar(count, idx) {
+    return (
+      <div id={idx.toString()}
+        className="DebuggerGraph-plotBar"
+        style={{height: this.height(count)}}
+        key={idx.toString()}
+        title={count.toString()}/>
+    );
+  }
+
   height(count) {
-    return (count * this.BAR_HEIGHT / this.max)  + "px"
+    return `${count * this.BAR_HEIGHT / this.max}px`;
   }
 
   render() {
@@ -29,8 +32,13 @@ class Chart extends Component {
           {bars}
         </div>
       </div>
-    )
+    );
   }
 }
+
+Chart.propTypes = {
+  id: PropTypes.string,
+  eventCounts: PropTypes.array,
+};
 
 export default Chart;
