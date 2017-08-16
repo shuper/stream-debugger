@@ -1,13 +1,18 @@
-import React, {Component} from 'react'
+import React from 'react';
+import PropTypes from 'prop-types';
 
-class Button extends Component{
-  render() {
-     return (
-       <button id={this.props.id} className="ui-Button" type="button" onClick={this.props.onClick}>
-          {this.props.text}
-       </button>
-     );
-  }
+function Button(props) {
+  return (
+    <button id={props.id} className="ui-Button" type="button" onClick={props.onClick}>
+      {props.text}
+    </button>
+  );
 }
+
+Button.propTypes = {
+  id: PropTypes.string,
+  text: PropTypes.string,
+  onClick: PropTypes.func,
+};
 
 export default Button;

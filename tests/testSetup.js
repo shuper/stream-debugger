@@ -10,6 +10,13 @@ global.FormData = window.FormData;
 global.btoa = window.btoa;
 global.atob = window.atob;
 
+// It's common practice includging this, however I'm not sure where it is helpfull:
+// Object.keys(document.defaultView).forEach((property) => {
+//   if (typeof global[property] === 'undefined') {
+//     global[property] = window[property];
+//   }
+// });
+
 function noop() {
   return {};
 }

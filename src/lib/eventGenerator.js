@@ -1,17 +1,18 @@
-function events(events_count, event_name) {
-  events_count = events_count || getRandomInt(2, 1000);
+function generateEvents(eventsCount, eventName) {
+  const count = eventsCount || getRandomInt({
+    from: 2,
+    to: 500});
   const uid = Date.now();
-  return Array.from({length: events_count}, (_, i) => (
-      {
-        messageId: uid + i, type: 'track', event: event_name || `Video Heartbeat ${uid + i}`,
-        source: 'android'
-      }
-    )
-  )
+  return Array.from({length: count}, (_, i) => ({
+    messageId: uid + i,
+    type: 'track',
+    event: eventName || `Video Heartbeat ${uid + i}`,
+    source: 'android',
+  }));
 }
 
-function getRandomInt(min, max) {
-  return Math.floor(Math.random() * (max - min)) + min;
+function getRandomInt({from, to}) {
+  return Math.floor(Math.random() * (to - from)) + from;
 }
 
-export {events};
+export {generateEvents};

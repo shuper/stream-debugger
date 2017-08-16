@@ -1,10 +1,16 @@
-const requestEvents = (requestEventsAsync) => async (dispatch, getState) => {
-  if (!getState().timer.isStarted) return;
+const requestEvents = requestEventsAsync => async (dispatch, getState) => {
+  if (!getState().timer.isStarted) {
+    return;
+  }
 
   const {events, shardIterator} = await requestEventsAsync(getState().shardIterator);
-  dispatch({type: 'ADD_CHUNK', payload: {events, shardIterator}});
-
-  await wait(1000);
+  dispatch({
+    type: 'ADD_CHUNK',
+    payload: {
+      events,
+      shardIterator}});
+  const PAUSE_IN_MS = 1000;
+  await wait(PAUSE_IN_MS);
   dispatch(requestEvents(requestEventsAsync));
 };
 
