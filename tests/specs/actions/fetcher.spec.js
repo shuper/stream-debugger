@@ -14,7 +14,7 @@ describe('async actions', () => {
     nock.cleanAll()
   });
 
-  it('creates ADD_CHUNK when requesting events has been done', () => {
+  it.skip('creates ADD_CHUNK when requesting events has been done', () => {
     const events = [{one: 1}];
 
     nock('http://127.0.0.1:8881/')
