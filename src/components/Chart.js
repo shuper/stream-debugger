@@ -18,12 +18,13 @@ class Chart extends Component {
   }
 
   height(count) {
-    return `${count * this.BAR_HEIGHT / this.max}px`;
+    if (this.max == 0) return '0px'
+    return `${(count * this.BAR_HEIGHT / this.max).toFixed()}px`;
   }
 
   render() {
     const {eventCounts} = this.props;
-    this.max = Math.max(...eventCounts) + 1;
+    this.max = Math.max(...eventCounts);
     const bars = eventCounts.map((e, i) => this.renderBar(e, i));
 
     return (
