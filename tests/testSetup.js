@@ -7,6 +7,8 @@ global.window = document.defaultView;
 global.navigator = window.navigator;
 global.HTMLElement = window.HTMLElement;
 global.FormData = window.FormData;
+global.btoa = window.btoa;
+global.atob = window.atob;
 
 function noop() {
   return {};
