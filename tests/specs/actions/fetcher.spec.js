@@ -14,11 +14,11 @@ describe('async actions', () => {
     nock.cleanAll()
   });
 
-  it.skip('creates ADD_CHUNK when requesting events has been done', () => {
+  it('creates ADD_CHUNK when requesting events has been done', () => {
     const events = [{one: 1}];
 
     nock('http://127.0.0.1:8881/')
-      .post('/?delay=0.5', body => true)
+      .post('/?delay=0.5', body => true).times(2)
       .reply(200, {Records: [{Data: btoa(JSON.stringify(events)), SequenceNumber: 123}] });
 
     const expectedActions = [
@@ -36,9 +36,10 @@ describe('async actions', () => {
       eventCounts: []
     });
 
-    return store.dispatch(requestEvents(requestEventsAsync)).then(() => {
-      // return of async actions
-      expect(store.getActions()).to.eql(expectedActions)
+    const action = requestEvents(requestEventsAsync);
+    return store.dispatch(action).then(() => {
+      expect(store.getActions()).to.eql(expectedActions);
+      store.dispatch({type: 'TOGGLE_TIMER'})
     })
   })
 });
