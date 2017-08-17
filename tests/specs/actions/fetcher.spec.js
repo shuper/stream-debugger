@@ -32,14 +32,25 @@ describe('async actions', () => {
     ];
     const store = mockStore({
       events:[],
-      timer: { buttonText:'start', isStarted: true },
+      timer: { isStarted: true },
       eventCounts: []
     });
 
-    const action = requestEvents(requestEventsAsync);
-    return store.dispatch(action).then(() => {
+    return store.dispatch(requestEvents(requestEventsAsync)).then(() => {
       expect(store.getActions()).to.eql(expectedActions);
       store.dispatch({type: 'TOGGLE_TIMER'})
+    })
+  })
+
+  it("doesn't dispatch ADD_CHUNK when timer is stopped", () => {
+    const store = mockStore({
+      events:[],
+      timer: { isStarted: false },
+      eventCounts: []
+    });
+
+    return store.dispatch(requestEvents(requestEventsAsync)).then(() => {
+      expect(store.getActions()).to.be.deep.eql([]);
     })
   })
 });

@@ -19,6 +19,10 @@
     "test:watch": "npm test -- -w",
     "eject": "react-scripts eject"
   },
+  "nyc": {
+    "include": "src",
+    "exclude": "**/*.spec.js" 
+  },
   "devDependencies": {
     "atob": "^2.0.3",
     "babel-eslint": "^7.2.3",
