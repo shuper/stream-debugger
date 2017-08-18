@@ -10,8 +10,7 @@ import PropTypes from 'prop-types';
 
 class App extends Component {
   render() {
-    const onClick = () => sendEventToKinesis(generateEvents(1, 'header click')[0])
-      .catch(e => console.log('Error sending an event', e));
+    const onClick = () => sendEventToKinesis(generateEvents(1, 'header click')[0]);
     // const onMouseMove = (e) => sendEventToKinesis(generateEvents(1, `header mouse move: (${e.screenX}, ${e.screenY})`)[0]);
     const onMouseMove = () => {};
     return (
