@@ -2,24 +2,20 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
 class Chart extends Component {
-  constructor(props) {
-    super(props);
-    this.BAR_HEIGHT = 190;
-  }
-
   renderBar(count, idx) {
     return (
-      <div id={idx.toString()}
+      <div id={"plotBar" + idx}
         className="DebuggerGraph-plotBar"
         style={{height: this.height(count)}}
-        key={idx.toString()}
+        key={"plotBar" + idx}
         title={count.toString()}/>
     );
   }
 
   height(count) {
-    if (this.max == 0) return '0px'
-    return `${(count * this.BAR_HEIGHT / this.max).toFixed()}px`;
+    if (this.max === 0) return '0px';
+    const bar_height = 190;
+    return `${(count * bar_height / this.max).toFixed()}px`;
   }
 
   render() {
