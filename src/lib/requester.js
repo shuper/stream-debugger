@@ -54,6 +54,6 @@ async function sendEventToKinesis(event) {
     body: JSON.stringify(event)});
 }
 
-export {sendEventToKinesis, streamUrl, requestKinesis};
+export {sendEventToKinesis, streamUrl, requestKinesis, requestEventsAsync, parseRecords};
 export default requestEventsAsync;
 // export default requestKinesis;

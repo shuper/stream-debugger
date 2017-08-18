@@ -3,7 +3,7 @@ import {fetch} from 'isomorphic-fetch';
 import {atob} from 'atob';
 import btoa from 'btoa';
 import nock from 'nock';
-import {streamUrl, requestKinesis, sendEventToKinesis} from '../../../src/lib/requester';
+import {streamUrl, requestKinesis, sendEventToKinesis, requestEventsAsync, parseRecords} from '../../../src/lib/requester';
 
 global.atob = atob;
 const host = 'dsfuupgo82.execute-api.eu-west-1.amazonaws.com';
@@ -100,5 +100,66 @@ describe('.sendEventToKinesis', () => {
       .reply(SUCCESS_CODE, 'really OK');
     const result = await sendEventToKinesis({event: 'Video Heartbeat'});
     expect(await result.text()).to.equal('really OK');
+  });
+});
+
+describe('.requestEventsAsync', () => {
+  afterEach(() => nock.cleanAll());
+
+  const eventData = btoa('{"event": "name 1"}');
+  const records = () => [{
+    SequenceNumber: 123,
+    Data: eventData}, {
+
+    SequenceNumber: 124,
+    Data: eventData},
+  ];
+
+  const mockRequestMockServer = ()=> {
+    nock('http://127.0.0.1:8881')
+      .post('/?delay=0.5', body => true)
+      .reply(SUCCESS_CODE, {
+        Records: records(),
+        NextShardIterator: 'next SI'});
+  };
+
+  const expectedEvents = () => [{
+    event: 'name 1',
+    id: 123}, {
+
+    event: 'name 1',
+    id: 124},
+  ];
+
+  it('requests records', async () => {
+    mockRequestMockServer();
+
+    const result = await requestEventsAsync();
+    expect(result).to.deep.equal({events: expectedEvents()});
+  });
+});
+
+
+describe('.parseRecords', () => {
+  const encodedEvent = btoa(JSON.stringify({event: "name 1"}));
+  const records = () => [{
+    SequenceNumber: 123,
+    Data: encodedEvent}, {
+
+    SequenceNumber: 124,
+    Data: encodedEvent},
+  ];
+
+  it('returns empty array when no argument', () => {
+    const result = parseRecords(undefined);
+    expect(result).to.be.deep.equal([]);
+  });
+
+  it('return array with decoded events and sets event id from sequence number', () => {
+    const result = parseRecords(records());
+    expect(result).to.be.deep.equal([
+      {event: 'name 1', id: 123},
+      {event: 'name 1', id: 124},
+    ]);
   });
 });
