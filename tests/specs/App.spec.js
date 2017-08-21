@@ -32,22 +32,13 @@ async function requestEventsAsync() {
 }
 
 describe('App', () => {
+  let requestEvents;
   function app(store) {
     return mount(<Provider store={store}><App requestEventsAsync={requestEventsAsync}/></Provider>);
   }
 
-  it('renders self and subcomponents', () => {
-    const appWrapper = app(mockStore(initialState));
-    expect(appWrapper.find('#App')).to.have.lengthOf(1);
-    expect(appWrapper.find('#chart')).to.have.lengthOf(1);
-    expect(appWrapper.find('#events-list')).to.have.lengthOf(1);
-    expect(appWrapper.find('#switcher')).to.have.lengthOf(1);
-  });
-
-
-  it('affects all subcomponents', () => {
-    const appWrapper = app(store);
-    const requestEvents = sinon.stub(fetcher, 'requestEvents').callsFake(() => {
+  beforeEach(() => {
+    requestEvents = sinon.stub(fetcher, 'requestEvents').callsFake(() => {
       return {
         "payload": {
           "events": [ { '0': { one: 1 }, id: 123 } ],
@@ -56,12 +47,30 @@ describe('App', () => {
         "type": "ADD_CHUNK"
       };
     });
+  });
+
+  afterEach(() => {
+    requestEvents.restore();
+  });
+
+  it('renders self and subcomponents', () => {
+    const appWrapper = app(mockStore(initialState));
+    expect(appWrapper.find('#App')).to.have.lengthOf(1);
+    expect(appWrapper.find('#chart')).to.have.lengthOf(1);
+    expect(appWrapper.find('#events-list')).to.have.lengthOf(1);
+    expect(appWrapper.find('#switcher')).to.have.lengthOf(1);
+    expect(appWrapper.find('#ReceivedCounter')).to.have.lengthOf(1);
+  });
+
+
+  it('affects all subcomponents', () => {
+    const appWrapper = app(store);
     const switcher = appWrapper.find('#switcher');
     expect(appWrapper.find('.DebuggerListItem')).to.have.lengthOf(0);
     expect(switcher.simulate('click'));
     expect(switcher.text()).to.be.eq('stop');
     expect(appWrapper.find('.DebuggerListItem')).to.have.lengthOf(1);
     expect(appWrapper.find('.DebuggerGraph-plotBar')).to.have.lengthOf(1);
-    requestEvents.restore();
+    expect(appWrapper.find('#ReceivedCounter').text()).to.be.eq('Total received: 1');
   });
 });
