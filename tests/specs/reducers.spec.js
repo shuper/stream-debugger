@@ -12,6 +12,7 @@ const initialState = {
     isStarted: false,
   },
   eventCounts: [],
+  sentEventsCount: 0
 };
 
 describe('reducer', () => {
@@ -54,4 +55,12 @@ describe('reducer', () => {
     expect(newState.shardIterator).to.be.equal(null);
   });
 
+  it('count sent events', () => {
+    const action = {
+      payload: {id:1,event:'e1'},
+      type: 'EVENT_SENT'
+    }
+    const newState = reducer(initialState, action);
+    expect(newState.sentEventsCount).to.be.equal(1);
+  });
 });

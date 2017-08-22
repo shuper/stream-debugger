@@ -9,6 +9,7 @@ const initialState = {
     isStarted: false,
   },
   eventCounts: [],
+  sentEventsCount: 0
 };
 
 export default createStore(reducer, initialState, applyMiddleware(thunk));

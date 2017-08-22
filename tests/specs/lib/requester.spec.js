@@ -4,9 +4,10 @@ import {atob} from 'atob';
 import btoa from 'btoa';
 import nock from 'nock';
 import {streamUrl, requestKinesis, sendEventToKinesis, requestEventsAsync, parseRecords} from '../../../src/lib/requester';
+import {API_HOST as host} from '../../../src/constants'
 
 global.atob = atob;
-const host = 'dsfuupgo82.execute-api.eu-west-1.amazonaws.com';
+// const host = 'dsfuupgo82.execute-api.eu-west-1.amazonaws.com';
 const path = '/Test/streams/myStream/';
 const SUCCESS_CODE = 200;
 

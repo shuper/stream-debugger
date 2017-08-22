@@ -24,6 +24,11 @@ function reducer(state, action){
         timer: state.timer.isStarted ? stopTimer() : startTimer(),
         shardIterator: null,
       };
+    case 'EVENT_SENT':
+      return {
+        ...state,
+        sentEventsCount: state.sentEventsCount + 1,
+      };
     default:
       return state;
   }

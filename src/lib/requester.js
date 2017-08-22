@@ -1,5 +1,6 @@
 import QueryString from 'query-string';
 import {generateEvents} from './eventGenerator';
+import {API_HOST as host} from '../constants';
 
 async function requestEventsAsync() {
   const API_URL = 'http://127.0.0.1:8881/?delay=0.5';
@@ -44,7 +45,8 @@ async function requestShardIterator() {
 
 function streamUrl({extraPath, params} = {}) {
   const queryString = params ? `?${QueryString.stringify(params)}` : '';
-  const host = 'dsfuupgo82.execute-api.eu-west-1.amazonaws.com';
+  // const host = 'dsfuupgo82.execute-api.eu-west-1.amazonaws.com';
+  // const host = '000.execute-api.eu-west-1.amazonaws.com';
   return `https://${host}/Test/streams/myStream/${extraPath || ''}${queryString}`;
 }
 

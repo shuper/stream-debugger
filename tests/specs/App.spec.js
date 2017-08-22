@@ -60,6 +60,7 @@ describe('App', () => {
     expect(appWrapper.find('#events-list')).to.have.lengthOf(1);
     expect(appWrapper.find('#switcher')).to.have.lengthOf(1);
     expect(appWrapper.find('#ReceivedCounter')).to.have.lengthOf(1);
+    expect(appWrapper.find('#SentCounter')).to.have.lengthOf(1);
   });
 
 
@@ -72,5 +73,6 @@ describe('App', () => {
     expect(appWrapper.find('.DebuggerListItem')).to.have.lengthOf(1);
     expect(appWrapper.find('.DebuggerGraph-plotBar')).to.have.lengthOf(1);
     expect(appWrapper.find('#ReceivedCounter').text()).to.be.eq('Total received: 1');
+    expect(appWrapper.find('#SentCounter').text()).to.be.eq('Total sent: 0');
   });
 });
