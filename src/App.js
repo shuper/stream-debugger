@@ -6,6 +6,7 @@ import EventsChart from './containers/EventsChart';
 import ReceivedCounter from './containers/ReceivedCounter';
 import SentCounter from './containers/SentCounter';
 import EventSender from './containers/EventSender';
+import EventDetail from './containers/EventDetail';
 import PropTypes from 'prop-types';
 
 class App extends Component {
@@ -22,7 +23,12 @@ class App extends Component {
           <SentCounter id="SentCounter" />
         </div>
 
-        <EventList id="events-list"/>
+        <div>
+          <div id="EventListWrapper">
+            <EventList id="events-list"/>
+          </div>
+          <EventDetail id="EventDetail"/>
+        </div>
       </div>
     );
   }

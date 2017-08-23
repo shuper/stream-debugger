@@ -3,9 +3,11 @@ import PropTypes from 'prop-types';
 
 class List extends Component{
   render() {
-    const {events} = this.props;
-    const listItems = events.map(event =>
-      <li className="DebuggerListItem" id={`id-${event.id}`} key={event.id}>{event.event}</li>
+    const {events, onClick, currentEvent} = this.props;
+    const listItems = events.map(event => {
+        const className = currentEvent && event.id === currentEvent.id ? "DebuggerListItem selected" : "DebuggerListItem";
+        return <li className={className} id={`id-${event.id}`} key={event.id} onClick={onClick(event.id)}>{event.event}</li>;
+      }
     );
 
     return (
@@ -17,6 +19,7 @@ class List extends Component{
 List.propTypes = {
   id: PropTypes.string,
   events: PropTypes.array,
+  onClick: PropTypes.func
 };
 
 export default List;

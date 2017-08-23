@@ -29,6 +29,11 @@ function reducer(state, action){
         ...state,
         sentEventsCount: state.sentEventsCount + 1,
       };
+    case 'SHOW_EVENT':
+      return {
+        ...state,
+        currentEvent: state.events.find((element) => element.id === action.payload.id),
+      };
     default:
       return state;
   }

@@ -61,8 +61,8 @@ describe('App', () => {
     expect(appWrapper.find('#switcher')).to.have.lengthOf(1);
     expect(appWrapper.find('#ReceivedCounter')).to.have.lengthOf(1);
     expect(appWrapper.find('#SentCounter')).to.have.lengthOf(1);
+    expect(appWrapper.find('#EventDetail')).to.have.lengthOf(0);
   });
-
 
   it('affects all subcomponents', () => {
     const appWrapper = app(store);
@@ -74,5 +74,10 @@ describe('App', () => {
     expect(appWrapper.find('.DebuggerGraph-plotBar')).to.have.lengthOf(1);
     expect(appWrapper.find('#ReceivedCounter').text()).to.be.eq('Total received: 1');
     expect(appWrapper.find('#SentCounter').text()).to.be.eq('Total sent: 0');
+  });
+
+  it('show events details when currentEvent is set', () => {
+    const appWrapper = app(mockStore({...initialState, currentEvent: {id: 1, event: 'myEvent'}}));
+    expect(appWrapper.find('#EventDetail')).to.have.lengthOf(1);
   });
 });

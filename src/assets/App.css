@@ -121,3 +121,26 @@
 .Label {
   margin-left: 5px;
 }
+
+.DebuggerListItem.selected {
+  border: 1px solid red;
+}
+
+#EventListWrapper:nth-child(1):nth-last-child(1) {
+  float: left;
+  width: 100%;
+} 
+
+#EventListWrapper:nth-child(1):nth-last-child(2),
+#EventDetail:nth-child(2):nth-last-child(1) {
+  float: left;
+  width: calc(50% - 15px);
+}
+
+#EventDetail {
+  padding: 5px 0 0 15px;
+}
+
+#CloseDetailWrapper {
+  text-align: right;
+}
